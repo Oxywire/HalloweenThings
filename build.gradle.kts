@@ -13,6 +13,8 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT")
+
+    implementation("org.spongepowered:configurate-yaml:4.1.2")
 }
 
 java {
@@ -28,6 +30,10 @@ tasks {
         fun reloc(vararg clazz: String) {
             clazz.forEach { relocate(it, "${project.group}.${rootProject.name}.libs.$it") }
         }
+
+        reloc(
+            "org.spongepowered"
+        )
 
         archiveFileName.set("HalloweenThings-${project.version}.jar")
     }
