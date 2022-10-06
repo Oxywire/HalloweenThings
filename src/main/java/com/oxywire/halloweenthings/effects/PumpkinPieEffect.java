@@ -2,6 +2,7 @@ package com.oxywire.halloweenthings.effects;
 
 import com.oxywire.halloweenthings.config.HalloweenThingsConfig;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -12,6 +13,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Setting;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -19,7 +21,7 @@ public class PumpkinPieEffect implements Effect, Listener {
 
     public static final String ID = "pumpkinpie";
     private final Plugin plugin;
-    private boolean enabled = true;
+    private boolean enabled = false;
 
     public PumpkinPieEffect(Plugin plugin) {
         this.plugin = plugin;
@@ -28,8 +30,8 @@ public class PumpkinPieEffect implements Effect, Listener {
     @EventHandler
     public void onConsume(PlayerItemConsumeEvent event) {
         if (event.getItem().getType() == Material.PUMPKIN_PIE) {
-            List<PotionEffect> potionEffects = getConfig().getPotionEffects();
-            event.getPlayer().addPotionEffect(potionEffects.get(ThreadLocalRandom.current().nextInt(potionEffects.size())));
+            List<Config.ConfigurablePotionEffect> potionEffects = getConfig().getPotionEffects();
+            event.getPlayer().addPotionEffect(potionEffects.get(ThreadLocalRandom.current().nextInt(potionEffects.size())).asPotionEffect());
         }
     }
 
@@ -61,15 +63,36 @@ public class PumpkinPieEffect implements Effect, Listener {
         @Setting
         private boolean enabled = true;
         @Setting
-        private List<PotionEffect> potionEffects = List.of(new PotionEffect(PotionEffectType.LEVITATION, 10, 256, true, true, true));
+        private List<ConfigurablePotionEffect> potionEffects = List.of(new ConfigurablePotionEffect());
 
         @Override
         public boolean isEnabled() {
             return enabled;
         }
 
-        public List<PotionEffect> getPotionEffects() {
+        public List<ConfigurablePotionEffect> getPotionEffects() {
             return potionEffects;
+        }
+
+        @ConfigSerializable
+        public static class ConfigurablePotionEffect {
+
+            @Setting
+            private String key = "minecraft:levitation";
+            @Setting
+            private Duration duration = Duration.ofSeconds(10);
+            @Setting
+            private int amplifier = 256;
+            @Setting
+            private boolean ambient = true;
+            @Setting
+            private boolean particles = true;
+            @Setting
+            private boolean icon = true;
+
+            public PotionEffect asPotionEffect() {
+                return new PotionEffect(PotionEffectType.getByKey(NamespacedKey.fromString(key)), (int) (duration.toSeconds() * 20), amplifier, ambient, particles, icon);
+            }
         }
     }
 }

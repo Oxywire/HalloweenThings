@@ -6,13 +6,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class HalloweenThingsPlugin extends JavaPlugin {
 
-    private final ConfigManager configManager = new ConfigManager(getDataFolder().toPath())
-            .withConfigs(HalloweenThingsConfig.class);
+    private ConfigManager configManager;
     private static HalloweenThingsPlugin instance;
 
     @Override
     public void onEnable() {
         instance = this;
+        this.configManager = new ConfigManager(getDataFolder().toPath())
+                .withConfigs(HalloweenThingsConfig.class);
     }
 
     @Override
