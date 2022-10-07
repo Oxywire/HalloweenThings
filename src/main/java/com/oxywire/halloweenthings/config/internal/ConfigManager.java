@@ -30,7 +30,7 @@ public class ConfigManager implements AutoCloseable {
     }
 
     public static <T> T getConfig(Class<T> config) {
-        return (T) CONFIGS.get(config);
+        return (T) CONFIGS.get(config).getConfig();
     }
 
 

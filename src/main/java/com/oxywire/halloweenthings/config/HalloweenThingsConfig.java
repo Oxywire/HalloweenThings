@@ -10,7 +10,6 @@ import com.oxywire.halloweenthings.effects.WitchNamesEffect;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Setting;
 
-import java.nio.file.WatchEvent;
 import java.util.Map;
 
 @ConfigSerializable
@@ -19,13 +18,13 @@ public class HalloweenThingsConfig implements Config {
     @Setting
     private Map<String, Effect.Config> effects = Map.of(
             JumpScareEffect.ID, new JumpScareEffect.Config(),
-            WitchNamesEffect.ID, new JumpScareEffect.Config(),
+            WitchNamesEffect.ID, new WitchNamesEffect.Config(),
             PumpkinPieEffect.ID, new PumpkinPieEffect.Config(),
             PumpkinBombsEffect.ID, new PumpkinBombsEffect.Config()
     );
 
     @Override
-    public void onUpdate(WatchEvent<?> event) {
+    public void onUpdate() {
         Effect.EFFECTS.forEach((id, effect) -> {
             if (effects.get(id).isEnabled() && !effect.isEnabled()) {
                 effect.enable();

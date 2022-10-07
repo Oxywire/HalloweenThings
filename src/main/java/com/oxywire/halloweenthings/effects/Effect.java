@@ -1,6 +1,7 @@
 package com.oxywire.halloweenthings.effects;
 
 import com.oxywire.halloweenthings.HalloweenThingsPlugin;
+import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
 import java.util.Map;
 
@@ -19,6 +20,7 @@ public interface Effect {
     Config getConfig();
 
 
+    @ConfigSerializable
     interface Config {
 
         boolean isEnabled();

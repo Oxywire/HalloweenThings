@@ -25,7 +25,7 @@ public class PumpkinBombsEffect implements Effect, Listener {
     public static final String ID = "pumpkinbombs";
     private static final Set<Material> EMPTY_SET = EnumSet.noneOf(Material.class);
     private final Plugin plugin;
-    private boolean enabled = true;
+    private boolean enabled = false;
 
     public PumpkinBombsEffect(Plugin plugin) {
         this.plugin = plugin;

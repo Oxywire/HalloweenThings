@@ -36,11 +36,12 @@ public class ConfigHandler<T> implements AutoCloseable {
                 configPath
         );
         this.config = base.referenceTo(clazz);
+        base.save();
 
         listener.listenToFile(configPath, event -> {
-            LOGGER.info("Updated ConfigFile {}", clazz.getSimpleName());
+            LOGGER.info("Updated {}.yml", clazz.getSimpleName());
             if (getConfig() instanceof Config conf) {
-                conf.onUpdate(event);
+                conf.onUpdate();
             }
         });
     }
